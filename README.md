@@ -20,14 +20,15 @@ All rights to the original code are owned by BeboXos.
 * ArpPoisoning, saving HttpUrls, HttpUserPass,HttpsUrls, Mails. Output in the current directory (working on)
 * TODO others
 
-## known bugs
+## Known Bugs
 * using DEauther breaks WIFI and BLT connections, so you need to restart your Rasp
 * some templates need to be executed 2 times, due to a P4wnp1 bug
 
 
 ## Installation:
 
-* On boot partition edit config.txt to set I2C and SPI to active (in terminal you can type nano /boot/config.txt)
+### Enabling spi and i2c on the pi zero
+On boot partition edit config.txt to set I2C and SPI to active (in terminal you can type nano /boot/config.txt)
 
 edit:
 
@@ -42,14 +43,14 @@ if you have a i2c screen or are using a UPS lite you will need to check the chan
 
         sudo i2cdetect -y 1
 
-if this displays a table of connected i2c devices all is good
+if this displays a table like below of connected i2c devices all is good
 
-        pi@raspberrypi:~ $ sudo i2cdetect -y 1
+        root@172.16.0.1:~ $ sudo i2cdetect -y 1
              0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
         00:          -- -- -- -- -- -- -- -- -- -- -- -- --
         10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-        20: -- -- -- 23 -- -- -- -- -- -- -- -- -- -- -- --
-        30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        30: -- -- -- -- -- -- 36 -- -- -- -- -- -- -- -- --
         40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
         50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
         60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -57,14 +58,17 @@ if this displays a table of connected i2c devices all is good
 
 but if it returns an error like this i2c hasn't been enabled correctly
 
-        Error: Could not open file `/dev/i2c-0' or `/dev/i2c/0': No such file or directory
-
+        Error: Could not open file `/dev/i2c-1' or `/dev/i2c/1': No such file or directory
 
 try deleting the following line from config.txt
 
          dtparam=i2c1=on
 
-###### Note for i2c: (on gui.py)
+if still having issues please look at useful links below unfortunately kali doesn't have raspi-config command
+
+### Edit gui.py to suit your setup
+
+###### Note for i2c screen: (on gui.py)
 
      set USER_I2C=1
      (if you have a ups) set UPS=1
@@ -74,27 +78,29 @@ try deleting the following line from config.txt
     set USER_I2C=0
     (if you have a ups) set UPS=1
 
-* chmod +x install.sh update.sh
-* run bash install.sh,
-the script will automatically install all the files needed
-
-
-
-
 ##### GPIO 8 keys are default waveshare hat
+    you can edit to set to your hat if different
+    * GPIO
+    * KEY_UP_PIN     : 6,
+    * KEY_DOWN_PIN   : 19,
+    * KEY_LEFT_PIN   : 5,
+    * KEY_RIGHT_PIN  : 26,
+    * KEY_PRESS_PIN  : 13,
+    * KEY1_PIN       : 21,
+    * KEY2_PIN       : 20,
+    * KEY3_PIN       : 16
 
-you can edit to set to your hat if different
-* GPIO
-* KEY_UP_PIN     : 6,
-* KEY_DOWN_PIN   : 19,
-* KEY_LEFT_PIN   : 5,
-* KEY_RIGHT_PIN  : 26,
-* KEY_PRESS_PIN  : 13,
-* KEY1_PIN       : 21,
-* KEY2_PIN       : 20,
-* KEY3_PIN       : 16
+### Final installation and dependencies
 
+Make the install script executable
 
+        chmod +x install.sh update.sh
+
+Run the install script using bash
+
+        bash install.sh
+
+the script will automatically install all the files needed
 
 ## Start at boot
 in P4wnP1 web interface , create a trigger action that runs the script runmenu.sh in you default template (by default startup)
@@ -108,7 +114,6 @@ select the script runmenu.sh.
 ## Improve the code
 * see MANUAL.md
 
-
 enjoy
 # i'm not responsible on usage you do with this repo, it's for educational purpose only
 
@@ -118,6 +123,7 @@ enjoy
 * rasp that I use : https://www.amazon.it/Melopero-Raspberry-Zero-Starter-Kit/dp/B072LWBL37/ref=sr_1_1?__mk_it_IT=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=melopero+raspberry+pi+zero+w+starter+kit&qid=1594075917&s=electronics&sr=1-1
 * oled that I use : https://www.amazon.it/gp/product/B078D6NXFM/ref=ppx_yo_dt_b_asin_title_o01_s00?ie=UTF8&psc=1
 * usb addon that I use : https://www.amazon.it/gp/product/B07BPTPDM5/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1
+* i2c tutorial : https://www.abelectronics.co.uk/kb/article/1/i2c-part-2---enabling-i-c-on-the-raspberry-pi
 
 ###### credits
 * P4wnp1 ALOA repo: https://github.com/RoganDawes/P4wnP1_aloa
