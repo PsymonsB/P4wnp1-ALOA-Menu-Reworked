@@ -27,7 +27,7 @@ All rights to the original code are owned by BeboXos.
 
 ## Installation:
 
-* On boot partition edit config.txt to set I2C and SPI to active (in termnial you can type nano /boot/config.txt)
+* On boot partition edit config.txt to set I2C and SPI to active (in terminal you can type nano /boot/config.txt)
 
 edit:
 
@@ -38,16 +38,39 @@ and find and set spi section:
 
          dtparam=spi=on
 
+if you have a i2c screen or are using a UPS lite you will need to check the changes after a reboot using the below command
+
+        sudo i2cdetect -y 1
+
+if this displays a table of connected i2c devices all is good
+
+        pi@raspberrypi:~ $ sudo i2cdetect -y 1
+             0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+        00:          -- -- -- -- -- -- -- -- -- -- -- -- --
+        10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        20: -- -- -- 23 -- -- -- -- -- -- -- -- -- -- -- --
+        30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        70: -- -- -- -- -- -- -- --
+
+but if it returns an error like this i2c hasn't been enabled correctly
+
+        Error: Could not open file `/dev/i2c-0' or `/dev/i2c/0': No such file or directory
+
+
+try deleting the following line from config.txt
+
+         dtparam=i2c1=on
 
 ###### Note for i2c: (on gui.py)
 
-     uncomment the "bus = smbus.SMBus(0)  # 0 = /dev/i2c-0 (port I2C0), 1 = /dev/i2c-1 (port I2C1)" line
      set USER_I2C=1
-     (if ups) set UPS=1
+     (if you have a ups) set UPS=1
 
 ###### Note for SPI: (on gui.py) (currently set like this)
 
-    comment the "bus = smbus.SMBus(0)  # 0 = /dev/i2c-0 (port I2C0), 1 = /dev/i2c-1 (port I2C1)" line
     set USER_I2C=0
     (if you have a ups) set UPS=1
 
