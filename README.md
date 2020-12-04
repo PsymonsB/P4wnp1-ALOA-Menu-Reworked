@@ -1,4 +1,6 @@
-##### INFOS
+# P4wnp1-ALOA-Menu-Reworked
+
+## Info
 
 This project was born from: https://github.com/beboxos/P4wnP1_ALOA_OLED_MENU_V2, since python2.7 is deprecated and therefore no longer compatible with the libraries in use, I opened a Fork, updated the code to Python3.7 and made a PullRequest.
 
@@ -8,7 +10,7 @@ If BeboXos returns to his repo this will be closed, and i hope so.
 
 All rights to the original code are owned by BeboXos.
 
-## what's new
+## What's New
 * I updated the code to work with python3.7, fixed some bugs and added new features.
 * new functions to make easier improving the code,see MANUAL.md
 * update the gui-code via gui-option
@@ -33,13 +35,12 @@ On boot partition edit config.txt to set I2C and SPI to active (in terminal you 
 edit:
 
          dtparam=i2c_arm=on
-         dtparam=i2c1=on
 
 and find and set spi section:
 
          dtparam=spi=on
 
-if you have a i2c screen or are using a UPS lite you will need to check the changes after a reboot using the below command
+if you have a i2c screen or are using a UPS lite you will need to check the i2c has enabled properly after a reboot using the below command
 
         sudo i2cdetect -y 1
 
@@ -56,15 +57,22 @@ if this displays a table like below of connected i2c devices all is good
         60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
         70: -- -- -- -- -- -- -- --
 
-but if it returns an error like this i2c hasn't been enabled correctly
+but if you dont have i2c-tools or it returns an error like this i2c hasn't been enabled correctly
 
         Error: Could not open file `/dev/i2c-1' or `/dev/i2c/1': No such file or directory
 
-try deleting the following line from config.txt
+to enable i2c properly can be a bit fiddly as kali doesn't have rpiconfig. you will need to do the following
 
-         dtparam=i2c1=on
+edit etc/modules to include the following lines
 
-if still having issues please look at useful links below unfortunately kali doesn't have raspi-config command
+        i2c_bcm2835
+        12c_dev
+
+also will need to install i2c-tools with
+
+        sudo apt-get install i2c-tools
+
+now reboot and try i2cdetect again
 
 ### Edit gui.py to suit your setup
 
@@ -123,7 +131,6 @@ enjoy
 * rasp that I use : https://www.amazon.it/Melopero-Raspberry-Zero-Starter-Kit/dp/B072LWBL37/ref=sr_1_1?__mk_it_IT=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=melopero+raspberry+pi+zero+w+starter+kit&qid=1594075917&s=electronics&sr=1-1
 * oled that I use : https://www.amazon.it/gp/product/B078D6NXFM/ref=ppx_yo_dt_b_asin_title_o01_s00?ie=UTF8&psc=1
 * usb addon that I use : https://www.amazon.it/gp/product/B07BPTPDM5/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1
-* i2c tutorial : https://www.abelectronics.co.uk/kb/article/1/i2c-part-2---enabling-i-c-on-the-raspberry-pi
 
 ###### credits
 * P4wnp1 ALOA repo: https://github.com/RoganDawes/P4wnP1_aloa
